@@ -18,8 +18,7 @@ Provide a class diagram for the provided code as you read through it.  For the c
 
 Create a class diagram for the classes you plan to create. This is your initial design, and it is okay if it changes. Your starting points are the interfaces. 
 
-
-
+![UML Diagram]![src](https://github.com/user-attachments/assets/0f6acec7-596b-4ff6-8a1b-c65f404ea453)
 
 
 ## (INITIAL DESIGN): Tests to Write - Brainstorm
@@ -36,8 +35,46 @@ Write a test (in english) that you can picture for the class diagram you have cr
 
 You should feel free to number your brainstorm. 
 
-1. Test 1..
-2. Test 2..
+1. Tests for FilterParser:
+Single Condition Filter Test
+
+Verify that a single condition like minPlayers>4 is correctly parsed and applied.
+Example: Only games with minPlayers > 4 are included.
+Multiple Condition Filter Test
+
+Test comma-separated filters like minPlayers>4,maxPlayers<6.
+Confirm that both conditions are applied using an AND operation.
+
+2. Tests for FilterParser:
+Multiple Condition Filter Test
+
+Test comma-separated filters like minPlayers>4,maxPlayers<6.
+Confirm that both conditions are applied using an AND operation.
+
+3.Tests for GameSorter:
+Sort by Name (Ascending)
+
+Verify that games are sorted by name in ascending order.
+Case insensitive: "catan", "Pandemic", "Zombicide".
+
+4.Tests for GameSorter:
+Sort by Name (Descending)
+
+Confirm descending order sorting for name.
+Case insensitive: "Zombicide", "Pandemic", "catan".
+
+5.Tests for GameListManager:
+Add Game Test
+
+Confirm that a game is added to the list successfully.
+Example: Adding "Catan" results in the list containing "Catan".
+
+6.Tests for GameListManager:
+
+Add Duplicate Game Test (Case Insensitive)
+
+Ensure duplicates are not added (case insensitive).
+Example: Adding "Catan" and "catan" should result in only one entry.
 
 
 
