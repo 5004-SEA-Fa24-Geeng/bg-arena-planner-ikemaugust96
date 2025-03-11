@@ -18,7 +18,8 @@ Provide a class diagram for the provided code as you read through it.  For the c
 
 Create a class diagram for the classes you plan to create. This is your initial design, and it is okay if it changes. Your starting points are the interfaces. 
 
-![UML Diagram]![src](https://github.com/user-attachments/assets/0f6acec7-596b-4ff6-8a1b-c65f404ea453)
+![UML Diagram]![program](https://github.com/user-attachments/assets/f7721709-c1c0-420a-a771-535b26411fd3)
+
 
 
 ## (INITIAL DESIGN): Tests to Write - Brainstorm
