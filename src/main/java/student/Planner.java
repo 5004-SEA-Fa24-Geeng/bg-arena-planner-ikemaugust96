@@ -1,5 +1,6 @@
 package student;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -32,7 +33,9 @@ public class Planner implements IPlanner {
                 .stream()
                 .reduce(x -> true, Predicate::and);
 
-        return games.stream().filter(predicate);
+        return games.stream()
+                .filter(predicate)
+                .sorted(Comparator.comparing(BoardGame::getName, String.CASE_INSENSITIVE_ORDER));
     }
 
     /**
