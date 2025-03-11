@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 /**
  * The {@code GameSorter} class provides sorting functionality for board games.
  */
-public class GameSorter {
+public final class GameSorter {
     //Prevents instantiation of this utility class
     private GameSorter() {
         throw new UnsupportedOperationException("Utility class - do not instantiate");

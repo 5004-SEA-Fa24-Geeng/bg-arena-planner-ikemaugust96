@@ -6,10 +6,17 @@ import java.util.function.Predicate;
  * The {@code BoardGameFilter} class provides different filtering strategies
  * for {@code BoardGame} objects based on various conditions.
  */
-public class BoardGameFilter {
-
+public final class BoardGameFilter {
+    //prevents instantiation of this utility class
+    private BoardGameFilter() {
+        throw new UnsupportedOperationException("Utility class - do not instantiate");
+    }
     /**
-     * Filters games by name using different operations.
+     * Creates a filter predicate for board games based on their name.
+     *
+     * @param name The name to compare against.
+     * @param op The comparison operation (EQUALS, CONTAINS, etc.).
+     * @return A predicate that filters board games based on the given operation.
      */
     public static Predicate<BoardGame> byName(String name, Operations op) {
         return switch (op) {
@@ -26,7 +33,11 @@ public class BoardGameFilter {
 
 
     /**
-     * Filters games by minimum players using different operations.
+     * Creates a filter predicate for board games based on the minimum number of players.
+     *
+     * @param value The minimum number of players to compare against.
+     * @param op The comparison operation (EQUALS, GREATER_THAN, etc.).
+     * @return A predicate that filters board games based on minimum players.
      */
     public static Predicate<BoardGame> byMinPlayers(int value, Operations op) {
         return switch (op) {
@@ -41,7 +52,11 @@ public class BoardGameFilter {
     }
 
     /**
-     * Filters games by maximum players using different operations.
+     * Creates a filter predicate for board games based on the maximum number of players.
+     *
+     * @param value The maximum number of players to compare against.
+     * @param op The comparison operation (EQUALS, GREATER_THAN, etc.).
+     * @return A predicate that filters board games based on maximum players.
      */
     public static Predicate<BoardGame> byMaxPlayers(int value, Operations op) {
         return switch (op) {
@@ -56,7 +71,11 @@ public class BoardGameFilter {
     }
 
     /**
-     * Filters games by maximum play time using different operations.
+     * Creates a filter predicate for board games based on play time.
+     *
+     * @param value The maximum play time to compare against.
+     * @param op The comparison operation (EQUALS, GREATER_THAN, etc.).
+     * @return A predicate that filters board games based on maximum play time.
      */
     public static Predicate<BoardGame> byMaxPlayTime(int value, Operations op) {
         return switch (op) {
@@ -71,7 +90,11 @@ public class BoardGameFilter {
     }
 
     /**
-     * Filters games by minimum play time using different operations.
+     * Creates a filter predicate for board games based on the minimum play time.
+     *
+     * @param value The minimum play time to compare against.
+     * @param op The comparison operation (EQUALS, GREATER_THAN, etc.).
+     * @return A predicate that filters board games based on minimum play time.
      */
     public static Predicate<BoardGame> byMinPlayTime(int value, Operations op) {
         return switch (op) {
@@ -86,7 +109,11 @@ public class BoardGameFilter {
     }
 
     /**
-     * Filters games by difficulty using different operations.
+     * Creates a filter predicate for board games based on difficulty.
+     *
+     * @param value The difficulty level to compare against.
+     * @param op The comparison operation (EQUALS, GREATER_THAN, etc.).
+     * @return A predicate that filters board games based on difficulty.
      */
     public static Predicate<BoardGame> byDifficulty(double value, Operations op) {
         return switch (op) {
@@ -101,7 +128,11 @@ public class BoardGameFilter {
     }
 
     /**
-     * Filters games by rank using different operations.
+     * Creates a filter predicate for board games based on their ranking.
+     *
+     * @param value The ranking value to compare against.
+     * @param op The comparison operation (EQUALS, GREATER_THAN, etc.).
+     * @return A predicate that filters board games based on rank.
      */
     public static Predicate<BoardGame> byRank(int value, Operations op) {
         return switch (op) {
@@ -116,7 +147,11 @@ public class BoardGameFilter {
     }
 
     /**
-     * Filters games by average rating using different operations.
+     * Creates a filter predicate for board games based on average rating.
+     *
+     * @param value The average rating to compare against.
+     * @param op The comparison operation (EQUALS, GREATER_THAN, etc.).
+     * @return A predicate that filters board games based on rating.
      */
     public static Predicate<BoardGame> byRating(double value, Operations op) {
         return switch (op) {
@@ -131,7 +166,11 @@ public class BoardGameFilter {
     }
 
     /**
-     * Filters games by year published using different operations.
+     * Creates a filter predicate for board games based on the year published.
+     *
+     * @param value The year to compare against.
+     * @param op The comparison operation (EQUALS, GREATER_THAN, etc.).
+     * @return A predicate that filters board games based on the year published.
      */
     public static Predicate<BoardGame> byYear(int value, Operations op) {
         return switch (op) {

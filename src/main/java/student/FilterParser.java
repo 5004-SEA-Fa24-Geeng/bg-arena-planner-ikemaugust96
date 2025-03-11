@@ -8,7 +8,7 @@ import java.util.function.Predicate;
  * The {@code FilterParser} class converts filter strings into predicates
  * that can be applied to streams of {@code BoardGame} objects.
  */
-public class FilterParser {
+public final class FilterParser {
     // Prevent instantiation of this utility class
     private FilterParser() {
         throw new UnsupportedOperationException("Utility class - do not instantiate");

@@ -6,7 +6,7 @@ import java.util.Comparator;
  * The {@code GameComparator} class provides multiple sorting strategies
  * for {@code BoardGame} objects, following the Strategy Pattern.
  */
-public class GameComparator {
+public final class GameComparator {
     //Prevents instantiation of this utility class
     private GameComparator() {
         throw new UnsupportedOperationException("Utility class - do not instantiate");
