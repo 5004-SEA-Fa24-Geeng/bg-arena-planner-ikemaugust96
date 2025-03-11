@@ -96,15 +96,18 @@ A Set, on the other hand, is an unordered collection that does not allow duplica
 
 5. In [GamesLoader.java](src/main/java/student/GamesLoader.java), we use a Map to help figure out the columns. What is a map? Why would we use a Map here? 
 
-
+A Map in Java is a collection that stores key-value pairs, allowing efficient lookup, insertion, and retrieval of values based on unique keys. Unlike a List or Set, which store individual elements, a Map associates each key with a specific value, making it ideal for fast lookups.
+In GamesLoader.java, a Map<GameData, Integer> called columnMap is used to store the mapping between column names (GameData enums) and their respective index positions in the CSV file. This is necessary because the order of columns in the CSV file might change, and hardcoding indices could lead to incorrect data parsing.
 
 
 6. [GameData.java](src/main/java/student/GameData.java) is actually an `enum` with special properties we added to help with column name mappings. What is an `enum` in Java? Why would we use it for this application?
 
+An enum in Java is a special data type that represents a fixed set of constant values. Unlike regular classes, enum values are predefined and immutable, making them ideal for representing a finite set of related options (e.g., days of the week, card suits, or column headers in a CSV file).
+In GamesLoader.java, GameData is used to map column names in the CSV file to their respective attributes in the BoardGame class. By using an enum, we ensure:
 
-
-
-
+Type Safety – Prevents using arbitrary strings or magic numbers for column names.
+Easy Column Lookup – Each GameData value can have associated properties, such as a column name, making dynamic mapping possible.
+Readability and Maintainability – Instead of hardcoding column indices, we can refer to GameData.NAME, GameData.RANK, etc., making the code cleaner and easier to update.
 
 
 7. Rewrite the following as an if else statement inside the empty code block.
@@ -122,7 +125,11 @@ A Set, on the other hand, is an unordered collection that does not allow duplica
 
     ```java
     // your code here, don't forget the class name that is dropped in the switch block..
-    
+      if (ct == ConsoleText.CMD_QUESTION || ct == ConsoleText.CMD_HELP) {
+         processHelp();
+      } else {
+        CONSOLE.printf("%s%n", ConsoleText.INVALID);
+      }
     ```
 
 ## Deeper Thinking
@@ -140,6 +147,17 @@ Post a copy of the run with the updated languages below this. Use three back tic
 
 ```text
 // your consoles output here
+Velkommen til BG Arena Spilleliste
+Indtast en kommando:
+list
+Der er ingen spil på listen.
+add Go
+Spillet "Go" er blevet tilføjet til listen.
+list
+1: Go
+exit
+Farvel! Tak fordi du brugte BG Arena Spilleliste.
+
 ```
 
 Now, thinking about localization - we have the question of why does it matter? The obvious
@@ -147,6 +165,25 @@ one is more about market share, but there may be other reasons.  I encourage
 you to take time researching localization and the importance of having programs
 flexible enough to be localized to different languages and cultures. Maybe pull up data on the
 various spoken languages around the world? What about areas with internet access - do they match? Just some ideas to get you started. Another question you are welcome to talk about - what are the dangers of trying to localize your program and doing it wrong? Can you find any examples of that? Business marketing classes love to point out an example of a car name in Mexico that meant something very different in Spanish than it did in English - however [Snopes has shown that is a false tale](https://www.snopes.com/fact-check/chevrolet-nova-name-spanish/).  As a developer, what are some things you can do to reduce 'hick ups' when expanding your program to other languages?
+Localization is a critical aspect of software development, extending beyond market share and revenue to inclusivity, accessibility, and cultural adaptation. By allowing software to be used in multiple languages and regions, companies can expand their audience, improve user experience, and ensure cultural relevance.
 
+From a business perspective, supporting multiple languages allows software products to reach more users globally. The data on global internet access and language distribution shows that while English is the dominant language in tech, a large portion of the world prefers other languages. For example, Chinese, Spanish, and Hindi speakers make up a significant portion of internet users. Ignoring localization means missing out on vast potential markets.
+
+From a technical standpoint, localization helps in UI/UX adaptation. Some languages, like Arabic and Hebrew, are written right-to-left (RTL), requiring a complete layout change. Others, like German or Finnish, have longer words, affecting button sizes and text wrapping. Without proper planning, these issues can break UI elements, making the software unusable in some languages.
+
+One major danger of localization errors is mistranslation or cultural insensitivity. Companies have faced embarrassing product failures due to poor translations. For example, in the 1980s, Pepsi's slogan "Come alive with Pepsi" was mistranslated in China as "Pepsi brings your ancestors back from the dead", which was culturally inappropriate. Similarly, software interfaces that hardcode text instead of using resource files make localization difficult, leading to higher costs and maintenance challenges.
+
+reference:
+Java Internationalization (i18n) and Localization (L10n) Guide
+🔗 https://docs.oracle.com/javase/tutorial/i18n/index.html
+
+Using Properties Files for Localization in Java
+🔗 https://www.baeldung.com/java-resourcebundle
+
+Java Properties File and Localization Example
+🔗 https://mkyong.com/java/java-properties-file-examples/
+
+Java Locale, ResourceBundle, and Formatting Messages
+🔗 https://www.journaldev.com/2511/java-internationalization-i18n
 
 As a reminder, deeper thinking questions are meant to require some research and to be answered in a paragraph for with references. The goal is to open up some of the discussion topics in CS, so you are better informed going into industry. 
