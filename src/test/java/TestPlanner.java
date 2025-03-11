@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import student.BoardGame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.HashSet;
@@ -12,7 +13,6 @@ import student.GameData;
 
 /**
  * JUnit test for the Planner class.
- * 
  * Just a sample test to get you started, also using
  * setup to help out. 
  */
@@ -32,13 +32,116 @@ public class TestPlanner {
         games.add(new BoardGame("Tucano", 5, 10, 20, 60, 90, 6.0, 500, 8.0, 2004));
     }
 
-     @Test
-    public void testFilterName() {
-        IPlanner planner = new Planner(games);
+
+    /**
+     * Test filtering by name.
+     */
+    @Test
+    public void testFilterByName() {
+        IPlanner planner = new Planner(games); // Creating new instance inside test
         List<BoardGame> filtered = planner.filter("name == Go").toList();
         assertEquals(1, filtered.size());
         assertEquals("Go", filtered.get(0).getName());
     }
-    
 
+    /**
+     * Test filtering by year published.
+     */
+    @Test
+    public void testFilterByYearPublished() {
+        IPlanner planner = new Planner(games); // Following YOUR pattern
+        List<BoardGame> filtered = planner.filter("yearPublished > 2003").toList();
+        assertEquals(4, filtered.size()); // 17 days, Chess, Monopoly, Tucano
+    }
+
+    /**
+     * Test filtering by difficulty.
+     */
+    @Test
+    public void testFilterByDifficulty() {
+        IPlanner planner = new Planner(games);
+        List<BoardGame> filtered = planner.filter("difficulty >= 8.0").toList();
+        assertEquals(3, filtered.size()); // Chess, Go, 17 days
+    }
+
+    /**
+     * Test filtering with multiple conditions.
+     */
+    @Test
+    public void testFilterByMultipleConditions() {
+        IPlanner planner = new Planner(games);
+        List<BoardGame> filtered = planner.filter("difficulty >= 7.0, yearPublished < 2005").toList();
+        assertEquals(2, filtered.size()); // Go, golang, GoRami
+    }
+
+    /**
+     * Test sorting by rating (ascending).
+     */
+    @Test
+    public void testSortByRatingAscending() {
+        IPlanner planner = new Planner(games);
+        List<BoardGame> sorted = planner.filter("", GameData.RATING, true).toList();
+        assertEquals("Monopoly", sorted.get(0).getName()); // Lowest rating
+        assertEquals("Chess", sorted.get(sorted.size() - 1).getName()); // Highest rating
+    }
+
+    /**
+     * Test sorting by rating (descending).
+     */
+    @Test
+    public void testSortByRatingDescending() {
+        IPlanner planner = new Planner(games);
+        List<BoardGame> sorted = planner.filter("", GameData.RATING, false).toList();
+        assertEquals("Chess", sorted.get(0).getName()); // Highest rating
+        assertEquals("Monopoly", sorted.get(sorted.size() - 1).getName()); // Lowest rating
+    }
+
+    /**
+     * Test filtering and sorting together.
+     */
+    @Test
+    public void testFilterAndSortByDifficulty() {
+        IPlanner planner = new Planner(games);
+        List<BoardGame> sorted = planner.filter("yearPublished >= 2000", GameData.DIFFICULTY, false).toList();
+        assertEquals("Chess", sorted.get(0).getName()); // Highest difficulty
+        assertEquals("Monopoly", sorted.get(sorted.size() - 1).getName()); // Lowest difficulty
+    }
+
+    /**
+     * Test filtering by minimum playtime.
+     */
+    @Test
+    public void testFilterByMinPlayTime() {
+        IPlanner planner = new Planner(games);
+        List<BoardGame> filtered = planner.filter("minPlayTime >= 50").toList();
+        assertEquals(3, filtered.size()); // 17 days, golang, Tucano
+    }
+
+    /**
+     * Test filtering by max players.
+     */
+    @Test
+    public void testFilterByMaxPlayers() {
+        IPlanner planner = new Planner(games);
+        List<BoardGame> filtered = planner.filter("maxPlayers > 6").toList();
+        assertEquals(5, filtered.size()); // Monopoly, Tucano
+    }
+
+    /**
+     * Test handling of invalid filter conditions.
+     */
+    @Test
+    public void testInvalidFilterThrowsException() {
+        IPlanner planner = new Planner(games);
+        assertThrows(IllegalArgumentException.class, () -> planner.filter("invalidFilter > 100"));
+    }
+
+    /**
+     * Test handling of invalid sorting attribute.
+     */
+    @Test
+    public void testInvalidSortingThrowsException() {
+        IPlanner planner = new Planner(games);
+        assertThrows(IllegalArgumentException.class, () -> planner.filter("", null, true));
+    }
 }

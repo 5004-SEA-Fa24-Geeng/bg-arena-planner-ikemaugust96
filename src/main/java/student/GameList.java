@@ -1,52 +1,54 @@
 package student;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * The {@code GameList} class implements the {@code IGameList} interface
+ * and is responsible for storing board games while delegating sorting
+ * to {@code GameSorter} with dynamic comparators.
+ */
 public class GameList implements IGameList {
+    private final List<BoardGame> storedGames;
 
     /**
-     * Constructor for the GameList.
+     * Constructs an empty GameList.
      */
     public GameList() {
-        throw new UnsupportedOperationException("Unimplemented constructor 'GameList'");
+        this.storedGames = new ArrayList<>();
     }
 
     @Override
-    public List<String> getGameNames() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getGameNames'");
-    }
-
-    @Override
-    public void clear() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'clear'");
-    }
-
-    @Override
-    public int count() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'count'");
-    }
-
-    @Override
-    public void saveGame(String filename) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'saveGame'");
-    }
-
-    @Override
-    public void addToList(String str, Stream<BoardGame> filtered) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addToList'");
+    public void addToList(String str, Stream<BoardGame> filtered) {
+        storedGames.addAll(filtered.toList());
     }
 
     @Override
     public void removeFromList(String str) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeFromList'");
+        storedGames.removeIf(game -> game.getName().equalsIgnoreCase(str));
     }
 
+    @Override
+    public List<String> getGameNames() {
+        return storedGames.stream()
+                .map(BoardGame::getName)
+                .sorted(String.CASE_INSENSITIVE_ORDER) // ✅ Ensures case-insensitive sorting
+                .toList();
+    }
 
+    @Override
+    public int count() {
+        return storedGames.size();
+    }
+
+    @Override
+    public void clear() {
+        storedGames.clear();
+    }
+
+    @Override
+    public void saveGame(String filename) {
+        throw new UnsupportedOperationException("Save functionality not implemented yet.");
+    }
 }

@@ -4,31 +4,36 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 
 /**
- * GameSorter provides sorting functionality for streams of BoardGame objects.
+ * The {@code GameSorter} class provides sorting functionality for board games.
  */
 public class GameSorter {
 
     /**
-     * Sorts a stream of BoardGame objects by a specified column.
+     * Sorts a stream of {@code BoardGame} objects based on a given attribute.
      *
-     * @param games The stream of BoardGame objects to sort.
-     * @param sortOn The column to sort on (e.g., NAME, RATING).
-     * @param ascending Whether to sort in ascending or descending order.
-     * @return A sorted stream of BoardGame objects.
+     * @param games     The stream of board games.
+     * @param sortOn    The sorting attribute (e.g., NAME, RATING).
+     * @param ascending Whether to sort in ascending order.
+     * @return A sorted stream of board games.
      */
     public static Stream<BoardGame> sort(Stream<BoardGame> games, GameData sortOn, boolean ascending) {
-        // TODO: Implement sorting logic
-        throw new UnsupportedOperationException("Unimplemented method 'sort'");
-    }
+        if (sortOn == null) {
+            throw new IllegalArgumentException("Sorting attribute cannot be null.");
+        }
 
-    /**
-     * Retrieves the appropriate Comparator based on the GameData column.
-     *
-     * @param sortOn The column to sort on.
-     * @return The Comparator for sorting BoardGame objects.
-     */
-    private static Comparator<BoardGame> getComparator(GameData sortOn) {
-        // TODO: Implement Comparator retrieval
-        throw new UnsupportedOperationException("Unimplemented method 'getComparator'");
+        Comparator<BoardGame> comparator = switch (sortOn) {
+            case NAME -> GameComparator.BY_NAME;
+            case RATING -> GameComparator.BY_RATING;
+            case MIN_PLAYERS -> GameComparator.BY_MIN_PLAYERS;
+            case MAX_PLAYERS -> GameComparator.BY_MAX_PLAYERS;
+            case MIN_TIME -> GameComparator.BY_MIN_PLAY_TIME;
+            case MAX_TIME -> GameComparator.BY_MAX_PLAY_TIME;
+            case DIFFICULTY -> GameComparator.BY_DIFFICULTY;
+            case RANK -> GameComparator.BY_RANK;
+            case YEAR -> GameComparator.BY_YEAR_PUBLISHED;
+            default -> throw new IllegalArgumentException("Unsupported sorting type: " + sortOn);
+        };
+
+        return games.sorted(ascending ? comparator : comparator.reversed());
     }
 }

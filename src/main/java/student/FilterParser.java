@@ -1,11 +1,12 @@
 package student;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * FilterParser is responsible for parsing filter strings
- * and converting them into predicates for filtering BoardGame streams.
+ * The {@code FilterParser} class converts filter strings into predicates
+ * that can be applied to streams of {@code BoardGame} objects.
  */
 public class FilterParser {
 
@@ -13,21 +14,70 @@ public class FilterParser {
      * Parses a filter string and returns a list of predicates.
      *
      * @param filter The filter string to parse.
-     * @return A list of predicates for filtering BoardGame objects.
+     * @return A list of predicates for filtering {@code BoardGame} objects.
      */
     public static List<Predicate<BoardGame>> parse(String filter) {
-        // TODO: Implement the logic to parse filter strings
-        throw new UnsupportedOperationException("Unimplemented method 'parse'");
-    }
+        List<Predicate<BoardGame>> predicates = new ArrayList<>();
 
-    /**
-     * Parses a single filter condition into a Predicate.
-     *
-     * @param condition The filter condition to parse.
-     * @return A predicate for filtering BoardGame objects.
-     */
-    private static Predicate<BoardGame> parseCondition(String condition) {
-        // TODO: Implement condition parsing
-        throw new UnsupportedOperationException("Unimplemented method 'parseCondition'");
+        // Handle empty filter: return a predicate that allows all games
+        if (filter == null || filter.trim().isEmpty()) {
+            return List.of(x -> true);
+        }
+
+        // Split filter string into conditions
+        String[] conditions = filter.split(",");
+        for (String condition : conditions) {
+            condition = condition.trim();
+
+            // Find the operator
+            Operations op = Operations.getOperatorFromStr(condition);
+            if (op == null) {
+                throw new IllegalArgumentException("Invalid filter operation: " + condition);
+            }
+
+            // Split into field and value
+            String[] parts = condition.split(op.getOperator());
+            if (parts.length != 2) {
+                throw new IllegalArgumentException("Invalid filter format: " + condition);
+            }
+
+            String field = parts[0].trim();
+            String value = parts[1].trim();
+
+            // Match field names exactly as they appear in BoardGame
+            switch (field) {
+                case "name":
+                    predicates.add(BoardGameFilter.byName(value, op));
+                    break;
+                case "minPlayers":
+                    predicates.add(BoardGameFilter.byMinPlayers(Integer.parseInt(value), op));
+                    break;
+                case "maxPlayers":
+                    predicates.add(BoardGameFilter.byMaxPlayers(Integer.parseInt(value), op));
+                    break;
+                case "maxPlayTime":
+                    predicates.add(BoardGameFilter.byMaxPlayTime(Integer.parseInt(value), op));
+                    break;
+                case "minPlayTime":
+                    predicates.add(BoardGameFilter.byMinPlayTime(Integer.parseInt(value), op));
+                    break;
+                case "difficulty":
+                    predicates.add(BoardGameFilter.byDifficulty(Double.parseDouble(value), op));
+                    break;
+                case "rank":
+                    predicates.add(BoardGameFilter.byRank(Integer.parseInt(value), op));
+                    break;
+                case "averageRating":
+                    predicates.add(BoardGameFilter.byRating(Double.parseDouble(value), op));
+                    break;
+                case "yearPublished":
+                    predicates.add(BoardGameFilter.byYear(Integer.parseInt(value), op));
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown filter field: " + field);
+            }
+        }
+
+        return predicates;
     }
 }
