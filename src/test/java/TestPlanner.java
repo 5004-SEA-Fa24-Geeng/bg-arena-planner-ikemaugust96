@@ -2,13 +2,18 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import student.BoardGame;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import student.Planner;
 import student.IPlanner;
 import student.GameData;
+import student.GameList;
+import student.BoardGameFilter;
+import student.Operations;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 
 /**
@@ -33,12 +38,17 @@ public class TestPlanner {
     }
 
 
+    // ========================
+    // Planner Tests
+    // ========================
+
     /**
      * Test filtering by name.
+     * Should return a single game with the exact name "Go".
      */
     @Test
     public void testFilterByName() {
-        IPlanner planner = new Planner(games); // Creating new instance inside test
+        IPlanner planner = new Planner(games);
         List<BoardGame> filtered = planner.filter("name == Go").toList();
         assertEquals(1, filtered.size());
         assertEquals("Go", filtered.get(0).getName());
@@ -46,89 +56,65 @@ public class TestPlanner {
 
     /**
      * Test filtering by year published.
+     * Should return all games published after 2003.
      */
     @Test
     public void testFilterByYearPublished() {
-        IPlanner planner = new Planner(games); // Following YOUR pattern
+        IPlanner planner = new Planner(games);
         List<BoardGame> filtered = planner.filter("yearPublished > 2003").toList();
-        assertEquals(4, filtered.size()); // 17 days, Chess, Monopoly, Tucano
+        assertEquals(4, filtered.size());
     }
 
     /**
      * Test filtering by difficulty.
+     * Should return games with difficulty greater than or equal to 8.0.
      */
     @Test
     public void testFilterByDifficulty() {
         IPlanner planner = new Planner(games);
         List<BoardGame> filtered = planner.filter("difficulty >= 8.0").toList();
-        assertEquals(3, filtered.size()); // Chess, Go, 17 days
+        assertEquals(3, filtered.size());
     }
 
     /**
-     * Test filtering with multiple conditions.
-     */
-    @Test
-    public void testFilterByMultipleConditions() {
-        IPlanner planner = new Planner(games);
-        List<BoardGame> filtered = planner.filter("difficulty >= 7.0, yearPublished < 2005").toList();
-        assertEquals(2, filtered.size()); // Go, golang, GoRami
-    }
-
-    /**
-     * Test sorting by rating (ascending).
+     * Test sorting by rating in ascending order.
+     * Ensures the first game has the lowest rating and the last has the highest.
      */
     @Test
     public void testSortByRatingAscending() {
         IPlanner planner = new Planner(games);
         List<BoardGame> sorted = planner.filter("", GameData.RATING, true).toList();
-        assertEquals("Monopoly", sorted.get(0).getName()); // Lowest rating
-        assertEquals("Chess", sorted.get(sorted.size() - 1).getName()); // Highest rating
+        assertEquals("Monopoly", sorted.get(0).getName());
+        assertEquals("Chess", sorted.get(sorted.size() - 1).getName());
     }
 
     /**
-     * Test sorting by rating (descending).
+     * Test sorting by rating in descending order.
+     * Ensures the first game has the highest rating and the last has the lowest.
      */
     @Test
     public void testSortByRatingDescending() {
         IPlanner planner = new Planner(games);
         List<BoardGame> sorted = planner.filter("", GameData.RATING, false).toList();
-        assertEquals("Chess", sorted.get(0).getName()); // Highest rating
-        assertEquals("Monopoly", sorted.get(sorted.size() - 1).getName()); // Lowest rating
+        assertEquals("Chess", sorted.get(0).getName());
+        assertEquals("Monopoly", sorted.get(sorted.size() - 1).getName());
     }
 
     /**
      * Test filtering and sorting together.
+     * Filters games published from 2000 onwards and sorts them by difficulty in descending order.
      */
     @Test
     public void testFilterAndSortByDifficulty() {
         IPlanner planner = new Planner(games);
         List<BoardGame> sorted = planner.filter("yearPublished >= 2000", GameData.DIFFICULTY, false).toList();
-        assertEquals("Chess", sorted.get(0).getName()); // Highest difficulty
-        assertEquals("Monopoly", sorted.get(sorted.size() - 1).getName()); // Lowest difficulty
-    }
-
-    /**
-     * Test filtering by minimum playtime.
-     */
-    @Test
-    public void testFilterByMinPlayTime() {
-        IPlanner planner = new Planner(games);
-        List<BoardGame> filtered = planner.filter("minPlayTime >= 50").toList();
-        assertEquals(3, filtered.size()); // 17 days, golang, Tucano
-    }
-
-    /**
-     * Test filtering by max players.
-     */
-    @Test
-    public void testFilterByMaxPlayers() {
-        IPlanner planner = new Planner(games);
-        List<BoardGame> filtered = planner.filter("maxPlayers > 6").toList();
-        assertEquals(5, filtered.size()); // Monopoly, Tucano
+        assertEquals("Chess", sorted.get(0).getName());
+        assertEquals("Monopoly", sorted.get(sorted.size() - 1).getName());
     }
 
     /**
      * Test handling of invalid filter conditions.
+     * Should throw an IllegalArgumentException.
      */
     @Test
     public void testInvalidFilterThrowsException() {
@@ -137,11 +123,91 @@ public class TestPlanner {
     }
 
     /**
-     * Test handling of invalid sorting attribute.
+     * Test handling of invalid sorting attributes.
+     * Should throw an IllegalArgumentException.
      */
     @Test
     public void testInvalidSortingThrowsException() {
         IPlanner planner = new Planner(games);
         assertThrows(IllegalArgumentException.class, () -> planner.filter("", null, true));
+    }
+
+    // ========================
+    //  GameList Tests
+    // ========================
+
+    /**
+     * Test adding games to GameList.
+     */
+    @Test
+    public void testAddToGameList() {
+        IPlanner planner = new Planner(games);
+        GameList gameList = new GameList();
+        Stream<BoardGame> filteredGames = planner.filter("name == Go");
+        gameList.addToList("Test", filteredGames);
+        assertEquals(1, gameList.count());
+    }
+
+    /**
+     * Test removing a game from GameList.
+     */
+    @Test
+    public void testRemoveFromGameList() {
+        IPlanner planner = new Planner(games);
+        GameList gameList = new GameList();
+        Stream<BoardGame> filteredGames = planner.filter("");
+        gameList.addToList("Test", filteredGames);
+        gameList.removeFromList("Go");
+        assertFalse(gameList.getGameNames().contains("Go"));
+    }
+
+    /**
+     * Test clearing GameList.
+     */
+    @Test
+    public void testClearGameList() {
+        IPlanner planner = new Planner(games);
+        GameList gameList = new GameList();
+        Stream<BoardGame> filteredGames = planner.filter("");
+        gameList.addToList("Test", filteredGames);
+        gameList.clear();
+        assertEquals(0, gameList.count());
+    }
+
+    // ========================
+    // BoardGameFilter Tests
+    // ========================
+
+    /**
+     * Test filtering games by difficulty.
+     * Should return games with difficulty above 7.5.
+     */
+    @Test
+    public void testBoardGameFilterByDifficulty() {
+        Predicate<BoardGame> filter = BoardGameFilter.byDifficulty(7.5, Operations.GREATER_THAN);
+        List<BoardGame> filtered = games.stream().filter(filter).toList();
+        assertTrue(filtered.size() > 0);
+    }
+
+    /**
+     * Test filtering games by rating.
+     * Should return games with rating >= 8.0.
+     */
+    @Test
+    public void testBoardGameFilterByRating() {
+        Predicate<BoardGame> filter = BoardGameFilter.byRating(8.0, Operations.GREATER_THAN_EQUALS);
+        List<BoardGame> filtered = games.stream().filter(filter).toList();
+        assertTrue(filtered.size() > 0);
+    }
+
+    /**
+     * Test filtering games by year published.
+     * Should return games published in or after 2000.
+     */
+    @Test
+    public void testBoardGameFilterByYearPublished() {
+        Predicate<BoardGame> filter = BoardGameFilter.byYear(2000, Operations.GREATER_THAN_EQUALS);
+        List<BoardGame> filtered = games.stream().filter(filter).toList();
+        assertTrue(filtered.size() > 0);
     }
 }

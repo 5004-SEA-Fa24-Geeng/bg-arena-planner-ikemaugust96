@@ -21,6 +21,7 @@ public class GameList implements IGameList {
 
     @Override
     public void addToList(String str, Stream<BoardGame> filtered) {
+        storedGames.clear();
         storedGames.addAll(filtered.toList());
     }
 
