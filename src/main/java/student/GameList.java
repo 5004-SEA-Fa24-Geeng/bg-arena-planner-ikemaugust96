@@ -1,5 +1,8 @@
 package student;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -200,6 +203,13 @@ public class GameList implements IGameList {
      */
     @Override
     public void saveGame(String filename) {
-        throw new UnsupportedOperationException("Save functionality not implemented yet.");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (String gameName : getGameNames()) {  // Uses sorted list from getGameNames()
+                writer.write(gameName);
+                writer.newLine(); // Ensures each name is on a new line
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error saving game list to file: " + filename, e);
+        }
     }
 }
