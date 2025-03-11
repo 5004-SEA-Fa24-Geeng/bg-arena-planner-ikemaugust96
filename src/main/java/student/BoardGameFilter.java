@@ -16,6 +16,8 @@ public class BoardGameFilter {
             case EQUALS -> game -> game.getName().equalsIgnoreCase(name);
             case CONTAINS -> game -> game.getName().toLowerCase().contains(name.toLowerCase());
             case NOT_EQUALS -> game -> !game.getName().equalsIgnoreCase(name);
+            case GREATER_THAN -> game -> game.getName().compareToIgnoreCase(name) > 0; // ✅ Supports name > X
+            case LESS_THAN -> game -> game.getName().compareToIgnoreCase(name) < 0;  // ✅ Supports name < X
             default -> throw new IllegalArgumentException("Unsupported operation for name: " + op);
         };
     }
