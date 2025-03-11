@@ -309,10 +309,16 @@ public class TestPlanner {
         GameList gameList = new GameList();
         Stream<BoardGame> filteredGames = planner.filter("");
         gameList.addToList("all", filteredGames);
-        List<String> sortedNames = gameList.getGameNames();
-        List<String> expectedNames = new ArrayList<>(sortedNames);
-        expectedNames.sort(String.CASE_INSENSITIVE_ORDER);
-        assertEquals(expectedNames, sortedNames);
+
+        // Ensures expected list is correctly sorted
+        List<String> expectedNames = planner.filter("")
+                .map(BoardGame::getName)
+                .sorted(String::compareToIgnoreCase)
+                .toList();
+
+        List<String> actualSortedNames = gameList.getGameNames();
+
+        assertEquals(expectedNames, actualSortedNames, "Sorting order is incorrect.");
     }
     // ========================
     // BoardGameFilter Tests

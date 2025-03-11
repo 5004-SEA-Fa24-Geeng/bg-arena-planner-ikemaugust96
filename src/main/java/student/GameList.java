@@ -167,9 +167,11 @@ public class GameList implements IGameList {
      */
     @Override
     public List<String> getGameNames() {
+
         return storedGames.stream()
-                .map(BoardGame::getName)
-                .sorted(String::compareToIgnoreCase)
+                .map(BoardGame::getName) //  Ensures we are working with Strings
+                .sorted(Comparator.comparing((String s) -> s.toLowerCase()) // Ensures case-insensitive sorting
+                        .thenComparing(Comparator.naturalOrder())) // Ensures strict lexicographic order
                 .toList();
     }
 
