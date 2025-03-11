@@ -68,7 +68,7 @@ public class FilterParser {
                 case "rank":
                     predicates.add(BoardGameFilter.byRank(Integer.parseInt(value), op));
                     break;
-                case "averagerating":
+                case "rating":
                     predicates.add(BoardGameFilter.byRating(Double.parseDouble(value), op));
                     break;
                 case "yearpublished":
