@@ -7,7 +7,10 @@ import java.util.Comparator;
  * for {@code BoardGame} objects, following the Strategy Pattern.
  */
 public class GameComparator {
-
+    //Prevents instantiation of this utility class
+    private GameComparator() {
+        throw new UnsupportedOperationException("Utility class - do not instantiate");
+    }
     /**
      * Comparator for sorting by name (case-insensitive).
      */

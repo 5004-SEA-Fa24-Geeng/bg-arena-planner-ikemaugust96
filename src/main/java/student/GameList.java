@@ -20,6 +20,10 @@ import java.util.stream.Stream;
  * </ul>
  */
 public class GameList implements IGameList {
+    /**
+     * A list that stores the board games added by the user.
+     * The list ensures no duplicate entries and maintains case-insensitive sorting.
+     */
     private final List<BoardGame> storedGames;
 
     /**

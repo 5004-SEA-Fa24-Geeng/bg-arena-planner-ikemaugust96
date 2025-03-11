@@ -1,6 +1,5 @@
 package student;
 
-import student.GameComparator;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
@@ -9,7 +8,10 @@ import java.util.stream.Stream;
  * The {@code GameSorter} class provides sorting functionality for board games.
  */
 public class GameSorter {
-
+    //Prevents instantiation of this utility class
+    private GameSorter() {
+        throw new UnsupportedOperationException("Utility class - do not instantiate");
+    }
     /**
      * Sorts a stream of {@code BoardGame} objects based on a given attribute.
      *

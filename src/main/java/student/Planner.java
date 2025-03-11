@@ -10,6 +10,10 @@ import java.util.stream.Stream;
  * and provides filtering and sorting capabilities for board games.
  */
 public class Planner implements IPlanner {
+    /**
+     * A set of board games managed by this planner.
+     * This set is used for filtering and sorting operations.
+     */
     private final Set<BoardGame> games; // Stores the games
 
     /**

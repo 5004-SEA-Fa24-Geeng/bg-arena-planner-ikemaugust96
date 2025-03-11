@@ -9,7 +9,10 @@ import java.util.function.Predicate;
  * that can be applied to streams of {@code BoardGame} objects.
  */
 public class FilterParser {
-
+    // Prevent instantiation of this utility class
+    private FilterParser() {
+        throw new UnsupportedOperationException("Utility class - do not instantiate");
+    }
     /**
      * Parses a filter string and returns a list of predicates.
      *
@@ -46,7 +49,7 @@ public class FilterParser {
             //Normalize field names (remove underscores, make lowercase)
             String normalizedField = field.replace("_", "").toLowerCase();
             // Match field names exactly as they appear in BoardGame
-            switch (normalizedField){
+            switch (normalizedField) {
                 case "name":
                     predicates.add(BoardGameFilter.byName(value, op));
                     break;
