@@ -1,6 +1,7 @@
 package student;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -203,10 +204,21 @@ public class GameList implements IGameList {
      */
     @Override
     public void saveGame(String filename) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (String gameName : getGameNames()) {  // Uses sorted list from getGameNames()
+        File file = new File(filename);
+        File parentDir = file.getParentFile(); // Get parent directory (e.g., "temp/")
+
+        //  Ensure the directory exists before writing
+        if (parentDir != null && !parentDir.exists()) {
+            boolean created = parentDir.mkdirs(); // Creates parent directories if needed
+            if (!created) {
+                throw new RuntimeException("Failed to create directory: " + parentDir);
+            }
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (String gameName : getGameNames()) {
                 writer.write(gameName);
-                writer.newLine(); // Ensures each name is on a new line
+                writer.newLine();
             }
         } catch (IOException e) {
             throw new RuntimeException("Error saving game list to file: " + filename, e);
