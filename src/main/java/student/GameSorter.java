@@ -1,5 +1,6 @@
 package student;
 
+import student.GameComparator;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
