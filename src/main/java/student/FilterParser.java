@@ -43,7 +43,8 @@ public class FilterParser {
 
             String field = parts[0].trim();
             String value = parts[1].trim();
-
+            //Normalize field names (remove underscores, make lowercase)
+            String normalizedField = field.replace("_", "").toLowerCase();
             // Match field names exactly as they appear in BoardGame
             switch (field) {
                 case "name":
