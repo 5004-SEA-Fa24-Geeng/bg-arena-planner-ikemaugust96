@@ -8,14 +8,61 @@ code as it is meant to help you understand some of the concepts.
 1. What is the difference between == and .equals in java? Provide a code example of each, where they would return different results for an object. Include the code snippet using the hash marks (```) to create a code block.
    ```java
    // your code here
-   
+   public class EqualsVsDoubleEquals {
+    public static void main(String[] args) {
+        // Case 1: String comparison
+        String s1 = new String("Hello");
+        String s2 = new String("Hello");
+
+        System.out.println(s1 == s2);      // ❌ false, different objects in memory
+        System.out.println(s1.equals(s2)); // ✅ true, same content
+
+        // Case 2: Custom object comparison
+        Person p1 = new Person("Alice");
+        Person p2 = new Person("Alice");
+
+        System.out.println(p1 == p2);      // ❌ false, different objects
+        System.out.println(p1.equals(p2)); // ❌ false, default .equals() checks memory
+
+        // Case 3: Custom object with overridden equals()
+        PersonOverridden p3 = new PersonOverridden("Alice");
+        PersonOverridden p4 = new PersonOverridden("Alice");
+
+        System.out.println(p3 == p4);      // ❌ false, different objects
+        System.out.println(p3.equals(p4)); // ✅ true, compares name values
+      }
+    }
+
+    class Person {
+      String name;
+      public Person(String name) { this.name = name; }
+    }
+
+    class PersonOverridden {
+      String name;
+      public PersonOverridden(String name) { this.name = name; }
+
+      @Override
+      public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof PersonOverridden other) {
+            return this.name.equals(other.name);
+        }
+        return false;
+     }
+   }
+
    ```
+
+== checks whether two references point to the same memory location (i.e., whether they are the same object).
+.equals() is a method that compares the contents (or values) of objects. By default, if not overridden, .equals() behaves like ==, but many classes (like String) override it to check for logical equality instead.
 
 
 
 
 2. Logical sorting can be difficult when talking about case. For example, should "apple" come before "Banana" or after? How would you sort a list of strings in a case-insensitive manner? 
 
+Logical sorting with case differences can be tricky because Java's default sorting treats uppercase letters before lowercase ones (e.g., "Banana" comes before "apple"). To ensure case-insensitive sorting, you can use String.CASE_INSENSITIVE_ORDER, which is a built-in comparator that ignores case, or Comparator.comparing(String::toLowerCase), which explicitly converts each string to lowercase before comparison. Both methods ensure alphabetical sorting while treating "apple" and "Apple" as equal.
 
 
 
@@ -35,11 +82,16 @@ code as it is meant to help you understand some of the concepts.
     ```
     Why would the order in which we checked matter (if it does matter)? Provide examples either way proving your point. 
 
-
+The order of checks in the getOperatorFromStr method does matter because some operators contain substrings of other operators. If we check in the wrong order, we might incorrectly match part of a longer operator before recognizing the full operator.
+Consider the operators >= and >. If we check for ">" before ">=", the method would detect just ">" first and return Operations.GREATER_THAN, even when the actual input was ">=".
 
 4. What is the difference between a List and a Set in Java? When would you use one over the other? 
 
+In Java, List and Set are both part of the Collection framework, but they serve different purposes and have distinct characteristics.
 
+A List is an ordered collection that allows duplicates. Elements are stored in a sequence, and each has an index. This makes List ideal when ordering matters or when you need to access elements by position. Common implementations include ArrayList (fast random access) and LinkedList (fast insertions/removals in the middle).
+
+A Set, on the other hand, is an unordered collection that does not allow duplicates. It is useful when uniqueness is required, such as storing a set of unique usernames or distinct items in a game. Popular implementations include HashSet (fast lookups but no order), LinkedHashSet (preserves insertion order), and TreeSet (sorted order).
 
 
 5. In [GamesLoader.java](src/main/java/student/GamesLoader.java), we use a Map to help figure out the columns. What is a map? Why would we use a Map here? 
