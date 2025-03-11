@@ -169,7 +169,7 @@ public class GameList implements IGameList {
     public List<String> getGameNames() {
         return storedGames.stream()
                 .map(BoardGame::getName)
-                .sorted(String.CASE_INSENSITIVE_ORDER)
+                .sorted(String::compareToIgnoreCase)
                 .toList();
     }
 
