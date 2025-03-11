@@ -46,20 +46,20 @@ public class FilterParser {
             //Normalize field names (remove underscores, make lowercase)
             String normalizedField = field.replace("_", "").toLowerCase();
             // Match field names exactly as they appear in BoardGame
-            switch (field) {
+            switch (normalizedField){
                 case "name":
                     predicates.add(BoardGameFilter.byName(value, op));
                     break;
-                case "minPlayers":
+                case "minplayers":
                     predicates.add(BoardGameFilter.byMinPlayers(Integer.parseInt(value), op));
                     break;
-                case "maxPlayers":
+                case "maxplayers":
                     predicates.add(BoardGameFilter.byMaxPlayers(Integer.parseInt(value), op));
                     break;
-                case "maxPlayTime":
+                case "maxplaytime":
                     predicates.add(BoardGameFilter.byMaxPlayTime(Integer.parseInt(value), op));
                     break;
-                case "minPlayTime":
+                case "minplaytime":
                     predicates.add(BoardGameFilter.byMinPlayTime(Integer.parseInt(value), op));
                     break;
                 case "difficulty":
@@ -68,10 +68,10 @@ public class FilterParser {
                 case "rank":
                     predicates.add(BoardGameFilter.byRank(Integer.parseInt(value), op));
                     break;
-                case "averageRating":
+                case "averagerating":
                     predicates.add(BoardGameFilter.byRating(Double.parseDouble(value), op));
                     break;
-                case "yearPublished":
+                case "yearpublished":
                     predicates.add(BoardGameFilter.byYear(Integer.parseInt(value), op));
                     break;
                 default:
