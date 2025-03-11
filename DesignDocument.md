@@ -88,7 +88,7 @@ For the final design, you just need to do a single diagram that includes both th
 
 > [!WARNING]
 > If you resubmit your assignment for manual grading, this is a section that often needs updating. You should double check with every resubmit to make sure it is up to date.
-
+![UML Diagram]![program]![bg-arena-planner-ikemaugust96](https://github.com/user-attachments/assets/a2fdc9b5-9dba-45d7-97bb-2f1371386c9b)
 
 
 
@@ -99,3 +99,7 @@ For the final design, you just need to do a single diagram that includes both th
 > The value of reflective writing has been highly researched and documented within computer science, from learning to information to showing higher salaries in the workplace. For this next part, we encourage you to take time, and truly focus on your retrospective.
 
 Take time to reflect on how your design has changed. Write in *prose* (i.e. do not bullet point your answers - it matters in how our brain processes the information). Make sure to include what were some major changes, and why you made them. What did you learn from this process? What would you do differently next time? What was the most challenging part of this process? For most students, it will be a paragraph or two. 
+
+Reflecting on the design process, I initially assumed that the sorting issue stemmed from String.CASE_INSENSITIVE_ORDER, but in reality, the root cause was overlooking the filtering mechanism within the Planner class. This oversight led to incorrect assumptions about the order of games in getGameNames(), when in fact, the actual problem was that the filtered set of games was not being properly processed before being stored or retrieved. This realization highlights how debugging often requires stepping back and re-evaluating assumptions, rather than focusing on the most immediate suspect.
+
+Throughout this process, I learned that even a seemingly minor oversight—such as neglecting to apply filtering consistently—can have ripple effects throughout the system. This experience reinforced the importance of systematically verifying how data flows through different components of the program, rather than making changes based solely on observed symptoms. If I were to approach this differently next time, I would pay closer attention to how data is transformed at each stage, ensuring that all intermediary steps (such as filtering, sorting, and storage) align with the intended logic. The most challenging aspect of this was that the error appeared in a location that seemed completely unrelated to filtering, making it easy to be misled by initial test failures. However, the process of debugging and fixing this mistake has given me a deeper appreciation for rigorous testing and the importance of verifying assumptions before jumping to conclusions.
